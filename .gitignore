@@ -1,0 +1,10 @@
+# IDE folders
+.idea/
+.vscode/
+.fleet/
+
+# Build folder
+_build/
+
+# Mac OS
+.DS_Store
