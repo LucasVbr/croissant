@@ -5,6 +5,8 @@
 }
 
 let line_comment = "//" [^ '\n']*
+let block_comment = "/*" [^'.']* "*/"
+let comment = line_comment | block_comment
 
 let letter = ['a'-'z' 'A'-'Z']
 let digit = ['0'-'9']
@@ -18,14 +20,13 @@ let char = "'" [^'.'] "'"
 let string = '"' [^'.']*  '"'
 
 rule token = parse
-   |  [' ' '\t'] | line_comment { token lexbuf }
+   |  [' ' '\t'] | comment { token lexbuf }
    | ['\n'] { Lexing.new_line lexbuf; token lexbuf }
 
    | '+' { PLUS }
    | '-' { MINUS }
    | '*' { TIMES }
    | '/' { DIVIDE }
-   | ';' { SEMICOLON }
    | "&&" { AMPERSAND_AMPERSAND }
    | "||" { BAR_BAR }
    | "==" { EQUALS_EQUALS }
@@ -34,15 +35,28 @@ rule token = parse
    | "<=" { LESS_THAN_EQUALS }
    | '>' { GREATER_THAN }
    | ">=" { GREATER_THAN_EQUALS }
+   | '=' { EQUALS }
 
    | "!" { EXCLAMATION }
+   | ';' { SEMICOLON }
+   | ':' { COLON }
+   | ',' { COMMA }
 
    | '(' { LPAREN }
    | ')' { RPAREN }
 
+   | "var" { VAR }
    | "vrai" { BOOLEAN(true) }
    | "faux" { BOOLEAN(false) }
-   | "vide" { NULL }
+   | "nul" { NULL }
+
+   | "entier" { INTEGER_TYPE }
+   | "reel" { FLOAT_TYPE }
+   | "caractere" { CHARACTER_TYPE }
+   | "chaine" { STRING_TYPE }
+   | "booleen" { BOOLEAN_TYPE }
+   | "vide" { VOID_TYPE }
+
    | integer as lxm { INTEGER(int_of_string lxm) }
    | float as lxm { FLOAT(float_of_string lxm) }
    | char as lxm { CHARACTER(lxm.[1]) }

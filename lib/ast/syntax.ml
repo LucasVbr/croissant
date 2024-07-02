@@ -1,5 +1,13 @@
 (* lib/ast/syntax.ml *)
 
+type _type =
+  | Type_Integer
+  | Type_Float
+  | Type_Character
+  | Type_String
+  | Type_Boolean
+  | Type_Void
+
 type literal =
   | Integer of int
   | Float of float
@@ -30,5 +38,11 @@ type expression =
   | UnaryExpression of unary_operator * expression
   | BinaryExpression of binary_operator * expression * expression
 
-type statement = ExpressionStatement of expression
+type variable_declaration =
+  | VariableDeclaration of _type * expression * expression
+
+type statement =
+  | ExpressionStatement of expression
+  | VariableStatement of variable_declaration list
+
 type source_file = SourceFile of statement list

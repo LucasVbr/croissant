@@ -4,6 +4,14 @@ open Alcotest
 open Ast.Syntax
 open Ast.Print
 
+let test_string_of_type () =
+  check string "int" "Type_Integer" (string_of_type Type_Integer);
+  check string "float" "Type_Float" (string_of_type Type_Float);
+  check string "bool" "Type_Boolean" (string_of_type Type_Boolean);
+  check string "string" "Type_String" (string_of_type Type_String);
+  check string "char" "Type_Character" (string_of_type Type_Character);
+  check string "void" "Type_Void" (string_of_type Type_Void)
+
 let test_string_of_literal () =
   check string "42" "Integer(42)" (string_of_literal (Integer 42));
   check string "3.14" "Float(3.14)" (string_of_literal (Float 3.14));
@@ -50,6 +58,24 @@ let test_string_of_expression () =
 let test_string_of_statement () =
   let stmt = ExpressionStatement (Literal (Integer 42)) in
   check string "42;" "ExpressionStatement(Literal(Integer(42)))"
+    (string_of_statement stmt);
+  let stmt =
+    VariableStatement
+      [ VariableDeclaration (Type_Integer, Identifier "x", Literal Null) ]
+  in
+  check string "int x;"
+    "VariableStatement([VariableDeclaration(Type_Integer, Identifier(\"x\"), \
+     Literal(Null))])"
+    (string_of_statement stmt);
+  let stmt =
+    VariableStatement
+      [
+        VariableDeclaration (Type_Integer, Identifier "x", Literal (Integer 42));
+      ]
+  in
+  check string "int x = 42;"
+    "VariableStatement([VariableDeclaration(Type_Integer, Identifier(\"x\"), \
+     Literal(Integer(42)))])"
     (string_of_statement stmt)
 
 let test_string_of_source_file () =
@@ -71,6 +97,7 @@ let () =
   let open Alcotest in
   run "AST tests"
     [
+      ("string_of_type", [ test_case "type" `Quick test_string_of_type ]);
       ( "string_of_literal",
         [ test_case "literal" `Quick test_string_of_literal ] );
       ( "string_of_unary_operator",

@@ -11,6 +11,13 @@
 %token <string> IDENTIFIER
 %token NULL
 
+%token INTEGER_TYPE
+%token FLOAT_TYPE
+%token CHARACTER_TYPE
+%token STRING_TYPE
+%token BOOLEAN_TYPE
+%token VOID_TYPE
+
 %token PLUS "+"
 %token MINUS "-"
 %token TIMES "*"
@@ -24,11 +31,16 @@
 %token LESS_THAN_EQUALS "<="
 %token GREATER_THAN ">"
 %token GREATER_THAN_EQUALS ">="
+%token EQUALS "="
 
 %token LPAREN "("
 %token RPAREN ")"
 
 %token SEMICOLON ";"
+%token COLON ":"
+%token COMMA ","
+
+%token VAR "var"
 
 %token EOF
 
@@ -52,6 +64,23 @@ statements:
 
 statement:
   | expression { ExpressionStatement($1) }
+  | "var" variable_declaration_list { VariableStatement($2) }
+
+variable_declaration_list:
+  | variable_declaration { [$1] }
+  | variable_declaration "," variable_declaration_list { $1 :: $3 }
+
+variable_declaration:
+  | IDENTIFIER ":" tp "=" expression { VariableDeclaration($3, Identifier($1), $5) }
+  | IDENTIFIER ":" tp { VariableDeclaration($3, Identifier($1), Literal(Null)) }
+
+tp:
+  | INTEGER_TYPE { Type_Integer }
+  | FLOAT_TYPE { Type_Float }
+  | CHARACTER_TYPE { Type_Character }
+  | STRING_TYPE { Type_String }
+  | BOOLEAN_TYPE { Type_Boolean }
+  | VOID_TYPE { Type_Void }
 
 expression:
   | literal { Literal($1) }
