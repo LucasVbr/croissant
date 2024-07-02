@@ -12,8 +12,20 @@
 
 This project uses [Dune](https://dune.build/) as a build system. You can install it with the following command:
 
+Install Dune with the following command:
 ```sh
 opam install dune
+```
+
+Generate the `.opam` file with the following command if it doesn't exist:
+```sh
+dune build croissant.opam
+```
+
+Install the dependencies with the following command:
+```sh
+opam install . --deps-only
+eval $(opam env)
 ```
 
 ## Usage
@@ -22,7 +34,7 @@ Run the following commands to build and run the project:
 
 ```sh
 dune build
-dune exec croissant
+echo "1 + 3;" | dune exec croissant
 ```
 
 ## Run tests
