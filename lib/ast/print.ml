@@ -8,13 +8,31 @@ let string_of_binary_operator = function
   | Substract -> "Substract"
   | Multiply -> "Multiply"
   | Divide -> "Divide"
+  | AmpersandAmpersand -> "AmpersandAmpersand"
+  | BarBar -> "BarBar"
+  | EqualsEquals -> "EqualsEquals"
+  | ExclamationEquals -> "ExclamationEquals"
+  | LessThan -> "LessThan"
+  | LessThanEquals -> "LessThanEquals"
+  | GreaterThan -> "GreaterThan"
+  | GreaterThanEquals -> "GreaterThanEquals"
 
 (** [string_of_unary_operator op] returns a string representation of the unary operator [op]. *)
-let string_of_unary_operator = function Negate -> "Negate"
+let string_of_unary_operator = function Negate -> "Negate" | Not -> "Not"
+
+(** [string_of_literal l] returns a string representation of the literal [l]. *)
+let string_of_literal = function
+  | Integer i -> "Integer(" ^ string_of_int i ^ ")"
+  | Float f -> "Float(" ^ string_of_float f ^ ")"
+  | Character c -> "Character('" ^ Char.escaped c ^ "')"
+  | String s -> "String(\"" ^ s ^ "\")"
+  | Boolean b -> "Boolean(" ^ string_of_bool b ^ ")"
+  | Null -> "Null"
 
 (** [string_of_expression e] returns a string representation of the expression [e]. *)
 let rec string_of_expression = function
-  | IntegerLiteral i -> "IntegerLiteral(" ^ string_of_int i ^ ")"
+  | Literal l -> "Literal(" ^ string_of_literal l ^ ")"
+  | Identifier i -> "Identifier(\"" ^ i ^ "\")"
   | UnaryExpression (op, e) ->
       "UnaryExpression("
       ^ string_of_unary_operator op

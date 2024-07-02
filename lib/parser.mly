@@ -3,12 +3,27 @@
    open Ast.Syntax
 %}
 
-%token <int> INT
+%token <int> INTEGER
+%token <float> FLOAT
+%token <bool> BOOLEAN
+%token <char> CHARACTER
+%token <string> STRING
+%token <string> IDENTIFIER
+%token NULL
 
 %token PLUS "+"
 %token MINUS "-"
 %token TIMES "*"
 %token DIVIDE "/"
+%token AMPERSAND_AMPERSAND "&&"
+%token BAR_BAR "||"
+%token EXCLAMATION "!"
+%token EQUALS_EQUALS "=="
+%token EXCLAMATION_EQUALS "!="
+%token LESS_THAN "<"
+%token LESS_THAN_EQUALS "<="
+%token GREATER_THAN ">"
+%token GREATER_THAN_EQUALS ">="
 
 %token LPAREN "("
 %token RPAREN ")"
@@ -17,6 +32,7 @@
 
 %token EOF
 
+%left "&&" "||"
 %left "+" "-"
 %left "*" "/"
 %nonassoc UMINUS
@@ -28,6 +44,7 @@
 
 main:
   | statements EOF { SourceFile($1) }
+  | EOF { SourceFile([]) }
 
 statements:
   | statement ";" { [$1] }
@@ -37,19 +54,34 @@ statement:
   | expression { ExpressionStatement($1) }
 
 expression:
-  | literal { $1 }
+  | literal { Literal($1) }
+  | IDENTIFIER { Identifier($1) }
   | unary_expression { $1 }
   | binary_expression { $1 }
   | "(" expression ")" { $2 }
 
 literal:
-  | INT { IntegerLiteral($1) }
+  | INTEGER { Integer($1) }
+  | FLOAT { Float($1) }
+  | CHARACTER { Character($1) }
+  | STRING { String($1) }
+  | BOOLEAN { Boolean($1) }
+  | NULL { Null }
 
 unary_expression:
- | MINUS expression %prec UMINUS { UnaryExpression(Negate, $2) }
+ | "-" expression %prec UMINUS { UnaryExpression(Negate, $2) }
+ | "!" expression { UnaryExpression(Not, $2) }
 
 binary_expression:
-  | e1=expression PLUS e2=expression { BinaryExpression(Add, e1, e2) }
-  | e1=expression MINUS e2=expression { BinaryExpression(Substract, e1, e2) }
-  | e1=expression TIMES e2=expression { BinaryExpression(Multiply, e1, e2) }
-  | e1=expression DIVIDE e2=expression { BinaryExpression(Divide, e1, e2) }
+  | e1=expression "+" e2=expression { BinaryExpression(Add, e1, e2) }
+  | e1=expression "-" e2=expression { BinaryExpression(Substract, e1, e2) }
+  | e1=expression "*" e2=expression { BinaryExpression(Multiply, e1, e2) }
+  | e1=expression "/" e2=expression { BinaryExpression(Divide, e1, e2) }
+  | e1=expression "&&" e2=expression { BinaryExpression(AmpersandAmpersand, e1, e2) }
+  | e1=expression "||" e2=expression { BinaryExpression(BarBar, e1, e2) }
+  | e1=expression "==" e2=expression { BinaryExpression(EqualsEquals, e1, e2) }
+  | e1=expression "!=" e2=expression { BinaryExpression(ExclamationEquals, e1, e2) }
+  | e1=expression "<" e2=expression { BinaryExpression(LessThan, e1, e2) }
+  | e1=expression "<=" e2=expression { BinaryExpression(LessThanEquals, e1, e2) }
+  | e1=expression ">" e2=expression { BinaryExpression(GreaterThan, e1, e2) }
+  | e1=expression ">=" e2=expression { BinaryExpression(GreaterThanEquals, e1, e2) }
