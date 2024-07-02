@@ -1,5 +1,1 @@
 ;test/dune
-
-(test
- (name ast)
- (libraries ast alcotest))

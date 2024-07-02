@@ -10,10 +10,6 @@
  (modules parser)
  (libraries ast))
 
-(library
- (name ast)
- (modules ast))
-
 (menhir
  (modules parser))
 

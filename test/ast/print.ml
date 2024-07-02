@@ -1,13 +1,17 @@
-(* test/ast.ml *)
+(* test/print.ml *)
 
 open Alcotest
-open Ast
+open Ast.Syntax
+open Ast.Print
 
 let test_string_of_binary_operator () =
   check string "+" "Add" (string_of_binary_operator Add);
   check string "-" "Substract" (string_of_binary_operator Substract);
   check string "*" "Multiply" (string_of_binary_operator Multiply);
   check string "/" "Divide" (string_of_binary_operator Divide)
+
+let test_string_of_unary_operator () =
+  check string "-" "Negate" (string_of_unary_operator Negate)
 
 let test_string_of_expression () =
   let expr = BinaryExpression (Add, IntegerLiteral 1, IntegerLiteral 2) in
@@ -39,6 +43,11 @@ let () =
   let open Alcotest in
   run "AST tests"
     [
+      ( "string_of_unary_operator",
+        [
+          test_case "string_of_unary_operator" `Quick
+            test_string_of_unary_operator;
+        ] );
       ( "string_of_binary_operator",
         [
           test_case "string_of_binary_operator" `Quick
