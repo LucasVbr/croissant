@@ -1,7 +1,7 @@
 (* bin/main.ml *)
 
 open Printf
-open Ast
+open Ast.Print
 
 let () =
   let lexbuf = Lexing.from_channel stdin in

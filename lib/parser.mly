@@ -1,6 +1,6 @@
 /* lib/parser.mly */
 %{
-   open Ast
+   open Ast.Syntax
 %}
 
 %token <int> INT
@@ -19,7 +19,7 @@
 
 %left "+" "-"
 %left "*" "/"
-//%nonassoc UMINUS
+%nonassoc UMINUS
 
 %start main
 %type <source_file> main
@@ -38,11 +38,15 @@ statement:
 
 expression:
   | literal { $1 }
+  | unary_expression { $1 }
   | binary_expression { $1 }
   | "(" expression ")" { $2 }
 
 literal:
   | INT { IntegerLiteral($1) }
+
+unary_expression:
+ | MINUS expression %prec UMINUS { UnaryExpression(Negate, $2) }
 
 binary_expression:
   | e1=expression PLUS e2=expression { BinaryExpression(Add, e1, e2) }

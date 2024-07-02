@@ -1,0 +1,6 @@
+;test/ast/dune
+
+(test
+ (name print)
+ (libraries alcotest ast)
+)
