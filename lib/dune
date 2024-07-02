@@ -1,2 +1,21 @@
+;lib/dune
+
 (library
- (name croissant))
+ (name lexer)
+ (modules lexer)
+ (libraries parser))
+
+(library
+ (name parser)
+ (modules parser)
+ (libraries ast))
+
+(library
+ (name ast)
+ (modules ast))
+
+(menhir
+ (modules parser))
+
+(ocamllex
+ (modules lexer))

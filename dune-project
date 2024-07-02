@@ -1,26 +1,20 @@
-(lang dune 3.10)
+(lang dune 3.4)
 
 (name croissant)
-
 (generate_opam_files true)
-
-(source
- (github username/reponame))
-
-(authors "Author Name")
-
-(maintainers "Maintainer Name")
-
+(source (github LucasVbr/croissant))
+(authors "LucasVbr")
+(maintainers "LucasVbr")
 (license LICENSE)
-
-(documentation https://url/to/documentation)
+;(documentation https://url/to/documentation)
 
 (package
- (name croissant)
- (synopsis "A short synopsis")
- (description "A longer description")
- (depends ocaml dune)
- (tags
-  (topics "to describe" your project)))
-
-; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
+  (name croissant)
+  (synopsis "A short synopsis")
+  (description "A longer description")
+  (depends ocaml dune alcotest menhir ocamlformat)
+  (tags
+    ("Custom programming language" "French")
+  )
+)
+(using menhir 2.1)

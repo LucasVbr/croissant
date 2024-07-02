@@ -5,6 +5,7 @@
 
 # Build folder
 _build/
+*.opam
 
 # Mac OS
 .DS_Store

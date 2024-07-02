@@ -1,4 +1,6 @@
+;bin/dune
+
 (executable
- (public_name croissant)
  (name main)
- (libraries croissant))
+ (public_name croissant)
+ (libraries parser lexer ast))

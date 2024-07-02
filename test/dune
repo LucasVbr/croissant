@@ -1,2 +1,5 @@
+;test/dune
+
 (test
- (name croissant))
+ (name ast)
+ (libraries ast alcotest))
