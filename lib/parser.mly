@@ -114,3 +114,4 @@ binary_expression:
   | e1=expression "<=" e2=expression { BinaryExpression(LessThanEquals, e1, e2) }
   | e1=expression ">" e2=expression { BinaryExpression(GreaterThan, e1, e2) }
   | e1=expression ">=" e2=expression { BinaryExpression(GreaterThanEquals, e1, e2) }
+  | e1=expression "=" e2=expression { BinaryExpression(Assign, e1, e2) }

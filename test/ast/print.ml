@@ -61,6 +61,7 @@ let test_string_of_binary_operator () =
       ("<=", "LessThanEquals", LessThanEquals);
       (">", "GreaterThan", GreaterThan);
       (">=", "GreaterThanEquals", GreaterThanEquals);
+      ("=", "Assign", Assign);
     ]
   in
   List.iter

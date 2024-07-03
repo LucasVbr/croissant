@@ -29,6 +29,7 @@ type binary_operator =
   | LessThanEquals
   | GreaterThan
   | GreaterThanEquals
+  | Assign
 
 type unary_operator = Negate | Not
 

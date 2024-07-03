@@ -25,6 +25,7 @@ let string_of_binary_operator = function
   | LessThanEquals -> "LessThanEquals"
   | GreaterThan -> "GreaterThan"
   | GreaterThanEquals -> "GreaterThanEquals"
+  | Assign -> "Assign"
 
 (** [string_of_unary_operator op] returns a string representation of the unary operator [op]. *)
 let string_of_unary_operator = function Negate -> "Negate" | Not -> "Not"
