@@ -1,12 +1,12 @@
 (* lib/ast/syntax.ml *)
 
 type _type =
-  | Type_Integer
-  | Type_Float
-  | Type_Character
-  | Type_String
-  | Type_Boolean
-  | Type_Void
+  | IntegerType
+  | FloatType
+  | CharacterType
+  | StringType
+  | BooleanType
+  | VoidType
 
 type literal =
   | Integer of int

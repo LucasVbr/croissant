@@ -4,12 +4,12 @@ open Syntax
 
 (** [string_of_type t] returns a string representation of the type [t]. *)
 let string_of_type = function
-  | Type_Integer -> "Type_Integer"
-  | Type_Float -> "Type_Float"
-  | Type_Character -> "Type_Character"
-  | Type_String -> "Type_String"
-  | Type_Boolean -> "Type_Boolean"
-  | Type_Void -> "Type_Void"
+  | IntegerType -> "IntegerType"
+  | FloatType -> "FloatType"
+  | CharacterType -> "CharacterType"
+  | StringType -> "StringType"
+  | BooleanType -> "BooleanType"
+  | VoidType -> "VoidType"
 
 (** [string_of_binary_operator op] returns a string representation of the binary operator [op]. *)
 let string_of_binary_operator = function
@@ -69,3 +69,15 @@ let string_of_source_file = function
   | SourceFile stmts ->
       let stmt_strings = List.map string_of_statement stmts in
       "SourceFile([" ^ String.concat ", " stmt_strings ^ "])"
+
+(** The signature of the module [PRINT]. *)
+module type Print = sig
+  val string_of_type : Syntax._type -> string
+  val string_of_binary_operator : Syntax.binary_operator -> string
+  val string_of_unary_operator : Syntax.unary_operator -> string
+  val string_of_literal : Syntax.literal -> string
+  val string_of_expression : Syntax.expression -> string
+  val string_of_variable_declaration : Syntax.variable_declaration -> string
+  val string_of_statement : Syntax.statement -> string
+  val string_of_source_file : Syntax.source_file -> string
+end

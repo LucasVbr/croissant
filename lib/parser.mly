@@ -75,12 +75,12 @@ variable_declaration:
   | IDENTIFIER ":" tp { VariableDeclaration($3, Identifier($1), Literal(Null)) }
 
 tp:
-  | INTEGER_TYPE { Type_Integer }
-  | FLOAT_TYPE { Type_Float }
-  | CHARACTER_TYPE { Type_Character }
-  | STRING_TYPE { Type_String }
-  | BOOLEAN_TYPE { Type_Boolean }
-  | VOID_TYPE { Type_Void }
+  | INTEGER_TYPE { IntegerType }
+  | FLOAT_TYPE { FloatType }
+  | CHARACTER_TYPE { CharacterType }
+  | STRING_TYPE { StringType }
+  | BOOLEAN_TYPE { BooleanType }
+  | VOID_TYPE { VoidType }
 
 expression:
   | literal { Literal($1) }

@@ -11,16 +11,16 @@ SourceFile([
         Add,
         BinaryExpression(
           Add,
-          Literal(Integer(4)
+          Literal(Integer(4)),
+          Literal(Integer(2))
         ),
-        Literal(Integer(2))
-      ),
-      BinaryExpression(
-        Multiply,
-        Literal(Integer(3)),
-        Literal(Integer(1))
-      ))
-    )]
-  )]
-)
+        BinaryExpression(
+          Multiply,
+          Literal(Integer(3)),
+          Literal(Integer(1))
+        )
+      )
+    )
+  ])
+])
 */
