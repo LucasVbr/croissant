@@ -3,4 +3,4 @@
 (executable
  (name main)
  (public_name croissant)
- (libraries parser lexer ast))
+ (libraries analyzer ast))
