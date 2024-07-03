@@ -71,14 +71,14 @@ let string_of_source_file = function
       let stmt_strings = List.map string_of_statement stmts in
       "SourceFile([" ^ String.concat ", " stmt_strings ^ "])"
 
-(** The signature of the module [PRINT]. *)
+(** The signature of the module [Print]. *)
 module type Print = sig
-  val string_of_type : Syntax._type -> string
-  val string_of_binary_operator : Syntax.binary_operator -> string
-  val string_of_unary_operator : Syntax.unary_operator -> string
-  val string_of_literal : Syntax.literal -> string
-  val string_of_expression : Syntax.expression -> string
-  val string_of_variable_declaration : Syntax.variable_declaration -> string
-  val string_of_statement : Syntax.statement -> string
-  val string_of_source_file : Syntax.source_file -> string
+  val string_of_type : _type -> string
+  val string_of_binary_operator : binary_operator -> string
+  val string_of_unary_operator : unary_operator -> string
+  val string_of_literal : literal -> string
+  val string_of_expression : expression -> string
+  val string_of_variable_declaration : variable_declaration -> string
+  val string_of_statement : statement -> string
+  val string_of_source_file : source_file -> string
 end

@@ -4,9 +4,8 @@
   exception Error of char
 }
 
-let line_comment = "//" [^ '\n']*
-let block_comment = "/*" [^'.']* "*/"
-let comment = line_comment | block_comment
+let line_comment = "//" [^'.']*'\n'
+ let block_comment = "/*" [^'.']* "*/"
 
 let letter = ['a'-'z' 'A'-'Z']
 let digit = ['0'-'9']
@@ -20,8 +19,12 @@ let char = "'" [^'.'] "'"
 let string = '"' [^'.']*  '"'
 
 rule token = parse
-   |  [' ' '\t'] | comment { token lexbuf }
-   | ['\n'] { Lexing.new_line lexbuf; token lexbuf }
+   |  ' ' | '\t' { token lexbuf }
+   | '\n' | line_comment { Lexing.new_line lexbuf; token lexbuf }
+   | block_comment as comment {
+     String.iter (fun c -> if c = '\n' then Lexing.new_line lexbuf) comment;
+     token lexbuf
+   }
 
    | '+' { PLUS }
    | '-' { MINUS }
