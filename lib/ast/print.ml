@@ -16,7 +16,7 @@ let string_of_literal = function
   | Integer i -> "Integer(" ^ string_of_int i ^ ")"
   | Float f -> "Float(" ^ string_of_float f ^ ")"
   | Character c -> "Character('" ^ Char.escaped c ^ "')"
-  | String s -> "String(\"" ^ s ^ "\")"
+  | String s -> "String(\"" ^ String.escaped s ^ "\")"
   | Boolean b -> "Boolean(" ^ string_of_bool b ^ ")"
   | Null -> "Null"
 

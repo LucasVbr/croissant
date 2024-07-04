@@ -2,10 +2,9 @@
 {
   open Parser
   exception Error of char
-}
 
-let line_comment = "//" [^'.']*'\n'
- let block_comment = "/*" [^'.']* "*/"
+  let buffer = Buffer.create 256
+}
 
 let letter = ['a'-'z' 'A'-'Z']
 let digit = ['0'-'9']
@@ -15,16 +14,12 @@ let non_digit = '_'
 let identifier = letter (alphanum | non_digit)*
 let integer = digit+
 let float = digit* '.' digit+
-let char = "'" [^'.'] "'"
-let string = '"' [^'.']*  '"'
 
 rule token = parse
    |  ' ' | '\t' { token lexbuf }
-   | '\n' | line_comment { Lexing.new_line lexbuf; token lexbuf }
-   | block_comment as comment {
-     String.iter (fun c -> if c = '\n' then Lexing.new_line lexbuf) comment;
-     token lexbuf
-   }
+   | "/*" { block_comment lexbuf }
+   | "//" { line_comment lexbuf }
+   | '\n' { Lexing.new_line lexbuf; token lexbuf }
 
    | '+' { PLUS }
    | '-' { MINUS }
@@ -62,9 +57,34 @@ rule token = parse
 
    | integer as lxm { INTEGER(int_of_string lxm) }
    | float as lxm { FLOAT(float_of_string lxm) }
-   | char as lxm { CHARACTER(lxm.[1]) }
-   | string as lxm { STRING(String.sub lxm 1 (String.length lxm - 2)) }
+
+  | "'\\''"    { CHARACTER '\'' }
+  | "'\\n'"    { CHARACTER '\n' }
+  | "'\\t'"    { CHARACTER '\t' }
+  | "'\\\\'"   { CHARACTER '\\' }
+  | "'\\r'"    { CHARACTER '\r' }
+  | "'\\b'"    { CHARACTER '\b' }
+  | "'" [^'\\'] "'" { CHARACTER (String.get (Lexing.lexeme lexbuf) 1) }
+
+   | "\"" { Buffer.clear buffer; string lexbuf }
    | identifier as lxm { IDENTIFIER(lxm) }
 
    | eof { EOF }
    | _ as c { raise (Error c) }
+
+and string = parse
+  | "\"" { STRING(Buffer.contents buffer)}
+  | "\\\"" { Buffer.add_char buffer '"'; string lexbuf }
+  | '\\' { Buffer.add_char buffer '\\'; string lexbuf }
+  | _ as c { Buffer.add_char buffer c; string lexbuf }
+
+and line_comment = parse
+ | '\n' { Lexing.new_line lexbuf; token lexbuf }
+ | eof { EOF }
+ | _ { line_comment lexbuf }
+
+and block_comment = parse
+ | "*/" { token lexbuf }
+ | '\n' { Lexing.new_line lexbuf; block_comment lexbuf }
+ | eof { EOF }
+ | _ { block_comment lexbuf }
