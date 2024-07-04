@@ -1,18 +1,1 @@
 ;lib/dune
-
-(library
- (name parser)
- (modules parser)
- (libraries ast))
-
-(library
-  (name analyzer)
-  (modules lexer analyzer)
-  (libraries parser)
-)
-
-(menhir
- (modules parser))
-
-(ocamllex
- (modules lexer))

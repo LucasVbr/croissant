@@ -1,7 +1,7 @@
 (* bin/main.ml *)
 
 open Printf
-open Ast.Print
+open Ast
 
 exception Error of string
 
@@ -12,7 +12,7 @@ let () =
   if args_count >= 2 then printf "%s" help_message
   else if args_count = 1 then
     let file_path = Sys.argv.(1) in
-    let ast = string_of_source_file (Analyzer.analyze_file file_path) in
+    let ast = Print.string_of_source_file (Analyzer.analyze_file file_path) in
     printf "%s\n" ast
   else raise (Error "interpreter from stdin is not implemented yet")
 (* TODO: Implement interpreter from stdin *)

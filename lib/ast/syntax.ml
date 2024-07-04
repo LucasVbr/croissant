@@ -18,7 +18,7 @@ type literal =
 
 type binary_operator =
   | Add
-  | Substract
+  | Subtract
   | Multiply
   | Divide
   | AmpersandAmpersand

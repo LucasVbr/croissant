@@ -1,4 +1,5 @@
 open Printf
+open Typecheck
 
 let analyze lexbuf =
   let ast =
@@ -19,6 +20,7 @@ let analyze lexbuf =
           file_name line_num col_num "Erreur syntaxique" "Syntaxe incorrecte";
         exit 1
   in
+  let _ = type_of_source_file ast in
   ast
 
 let analyze_file file_name =

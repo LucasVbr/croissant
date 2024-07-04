@@ -1,4 +1,4 @@
-(* test/print.ml *)
+(* test/ast/print.ml *)
 
 open Alcotest
 open Ast.Syntax
@@ -9,6 +9,7 @@ module To_test = struct
   let binary_operator = Ast.Print.string_of_binary_operator
   let unary_operator = Ast.Print.string_of_unary_operator
   let expression = Ast.Print.string_of_expression
+  let variable_declaration = Ast.Print.string_of_variable_declaration
   let statement = Ast.Print.string_of_statement
   let source_file = Ast.Print.string_of_source_file
 end
@@ -50,7 +51,7 @@ let test_string_of_binary_operator () =
   let tests =
     [
       ("+", "Add", Add);
-      ("-", "Substract", Substract);
+      ("-", "Subtract", Subtract);
       ("*", "Multiply", Multiply);
       ("/", "Divide", Divide);
       ("&&", "AmpersandAmpersand", AmpersandAmpersand);
@@ -94,18 +95,33 @@ let test_string_of_expression () =
       (check string) name expected (To_test.expression actual))
     tests
 
+let test_string_of_variable_declaration () =
+  let tests =
+    [
+      ( "var x: int = 42;",
+        "VariableDeclaration(IntegerType, Identifier(\"x\"), \
+         Literal(Integer(42)))",
+        VariableDeclaration (IntegerType, Identifier "x", Literal (Integer 42))
+      );
+    ]
+  in
+  List.iter
+    (fun (name, expected, actual) ->
+      (check string) name expected (To_test.variable_declaration actual))
+    tests
+
 let test_string_of_statement () =
   let tests =
     [
       ( "42;",
         "ExpressionStatement(Literal(Integer(42)))",
         ExpressionStatement (Literal (Integer 42)) );
-      ( "int x;",
+      ( "var x: int;",
         "VariableStatement([VariableDeclaration(IntegerType, \
          Identifier(\"x\"), Literal(Null))])",
         VariableStatement
           [ VariableDeclaration (IntegerType, Identifier "x", Literal Null) ] );
-      ( "int x = 42;",
+      ( "var x: int = 42;",
         "VariableStatement([VariableDeclaration(IntegerType, \
          Identifier(\"x\"), Literal(Integer(42)))])",
         VariableStatement
@@ -152,6 +168,11 @@ let () =
         [ test_case "binary_operator" `Quick test_string_of_binary_operator ] );
       ( "string_of_expression",
         [ test_case "expression" `Quick test_string_of_expression ] );
+      ( "string_of_variable_declaration",
+        [
+          test_case "variable_declaration" `Quick
+            test_string_of_variable_declaration;
+        ] );
       ( "string_of_statement",
         [ test_case "statement" `Quick test_string_of_statement ] );
       ( "string_of_source_file",

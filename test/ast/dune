@@ -4,3 +4,8 @@
  (name print)
  (libraries alcotest ast)
 )
+
+(test
+ (name typecheck)
+ (libraries alcotest ast)
+)

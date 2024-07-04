@@ -1,6 +1,6 @@
 /* lib/parser.mly */
 %{
-   open Ast.Syntax
+   open Syntax
 %}
 
 %token <int> INTEGER
@@ -103,7 +103,7 @@ unary_expression:
 
 binary_expression:
   | e1=expression "+" e2=expression { BinaryExpression(Add, e1, e2) }
-  | e1=expression "-" e2=expression { BinaryExpression(Substract, e1, e2) }
+  | e1=expression "-" e2=expression { BinaryExpression(Subtract, e1, e2) }
   | e1=expression "*" e2=expression { BinaryExpression(Multiply, e1, e2) }
   | e1=expression "/" e2=expression { BinaryExpression(Divide, e1, e2) }
   | e1=expression "&&" e2=expression { BinaryExpression(AmpersandAmpersand, e1, e2) }
