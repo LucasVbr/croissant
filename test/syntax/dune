@@ -1,0 +1,4 @@
+(test
+  (name TestSyntax)
+  (libraries Syntax alcotest)
+)

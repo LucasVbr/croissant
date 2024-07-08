@@ -1,5 +1,0 @@
-; lib/eval/dune
-
-;(library
-; (name eval)
-; (modules eval))

@@ -1,0 +1,10 @@
+(library
+ (name Syntax)
+ (modules
+  Types
+  Literals
+  BinaryOperators
+  UnaryOperators
+  Expressions
+  Statements
+  SourceFiles))

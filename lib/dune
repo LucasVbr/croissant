@@ -1,1 +1,3 @@
-;lib/dune
+(library
+ (name Croissant)
+ (libraries Syntax Analyzer))

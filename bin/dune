@@ -1,6 +1,4 @@
-;bin/dune
-
 (executable
  (name main)
  (public_name croissant)
- (libraries ast))
+ (libraries Croissant))
