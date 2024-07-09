@@ -34,9 +34,19 @@ rule token = parse
   | '-' { MINUS }
   | '*' { TIMES }
   | '/' { DIV }
+  | "==" { EQUAL_EQUAL }
+  | "!=" { NOT_EQUAL }
+  | "<" { LESS_THAN }
+  | "<=" { LESS_THAN_EQUAL }
+  | ">" { GREATER_THAN }
+  | ">=" { GREATER_THAN_EQUAL }
+  | "&&" { AMPERSAND_AMPERSAND }
+  | "||" { BAR_BAR }
+  | "!" { EXCLAMATION }
 
   (* Keywords *)
-  (* ... *)
+  | "vrai" { BOOLEAN(true) }
+  | "faux" { BOOLEAN(false) }
 
   (* Literals *)
   | interger as i { INT (int_of_string i) }

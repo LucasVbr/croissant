@@ -8,6 +8,16 @@ let test_pp_binary_operators () =
       ("Should return \"Subtract\"", "Subtract", Subtract);
       ("Should return \"Multiply\"", "Multiply", Multiply);
       ("Should return \"Divide\"", "Divide", Divide);
+      ("Should return \"Equals\"", "Equals", Equals);
+      ("Should return \"NotEquals\"", "NotEquals", NotEquals);
+      ("Should return \"LessThan\"", "LessThan", LessThan);
+      ("Should return \"LessThanEquals\"", "LessThanEquals", LessThanEquals);
+      ("Should return \"GreaterThan\"", "GreaterThan", GreaterThan);
+      ( "Should return \"GreaterThanEquals\"",
+        "GreaterThanEquals",
+        GreaterThanEquals );
+      ("Should return \"And\"", "And", And);
+      ("Should return \"Or\"", "Or", Or);
     ]
   in
   List.iter
