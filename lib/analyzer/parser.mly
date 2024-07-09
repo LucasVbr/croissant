@@ -3,6 +3,12 @@ open Syntax
 %}
 
 %token <int> INT
+%token <float> FLOAT
+%token <char> CHARACTER
+%token <string> STRING
+%token <string> IDENTIFIER
+%token NULL
+
 %token PLUS "+"
 %token MINUS "-"
 %token TIMES "*"
@@ -36,12 +42,17 @@ statement:
 
 expression:
   | literal            { Expressions.Literal($1) }
+  | IDENTIFIER         { Expressions.Identifier($1) }
   | unary_expression   { $1 }
   | binary_expression  { $1 }
   | "(" expression ")" { $2 }
 
 literal:
   | INT { Literals.Integer($1) }
+  | FLOAT { Literals.Float($1) }
+  | CHARACTER { Literals.Character($1) }
+  | STRING { Literals.String($1) }
+  | NULL { Literals.Null }
 
 unary_expression:
   | "-" expression %prec UMINUS { Expressions.UnaryExpression(UnaryOperators.ArithmeticNegation, $2) }

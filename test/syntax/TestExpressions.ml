@@ -7,6 +7,9 @@ let test_pp_expressions () =
       ( "Should return \"Literal(...)\"",
         "Literal(Integer(1))",
         Expressions.Literal (Literals.Integer 1) );
+      ( "Should return \"Identifier(...)\"",
+        "Identifier(\"myVar\")",
+        Expressions.Identifier "myVar" );
       ( "Should return \"UnaryExpression(...)\"",
         "UnaryExpression(ArithmeticNegation, Literal(Integer(2)))",
         Expressions.UnaryExpression

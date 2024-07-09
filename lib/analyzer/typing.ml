@@ -1,1 +1,1 @@
-type environment = { variables : (string * _type) list }
+type environment = { variables : (string * Types.types) list }

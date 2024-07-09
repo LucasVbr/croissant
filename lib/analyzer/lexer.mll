@@ -40,20 +40,28 @@ rule token = parse
 
   (* Literals *)
   | interger as i { INT (int_of_string i) }
-(*  | float as f { FLOAT (float_of_string f) } *)
+  | float as f { FLOAT (float_of_string f) }
+  | '"' { Buffer.clear buffer; STRING(string lexbuf) }
+  | "''" { NULL }
+  | "'\\''"    { CHARACTER '\'' }
+  | "'\\n'"    { CHARACTER '\n' }
+  | "'\\t'"    { CHARACTER '\t' }
+  | "'\\\\'"   { CHARACTER '\\' }
+  | "'\\r'"    { CHARACTER '\r' }
+  | "'\\b'"    { CHARACTER '\b' }
+  | "'" [^'\\'] "'" { CHARACTER (String.get (Lexing.lexeme lexbuf) 1) }
 
   (* Identifiers *)
-  (* ... *)
+  | identifier as lxm { IDENTIFIER(lxm) }
 
   | eof { EOF }
   | _ as c { raise (Error c) }
 
 and string = parse
-  | '"' { token lexbuf }
+  | '\"' { Buffer.contents buffer}
+  | "\\\"" { Buffer.add_char buffer '"'; string lexbuf }
   | '\\' { Buffer.add_char buffer '\\'; string lexbuf }
-  | '\n' { Buffer.add_char buffer '\n'; string lexbuf }
-  | eof { raise (Error '"') }
-  | _ { Buffer.add_char buffer (Lexing.lexeme_char lexbuf 0); string lexbuf }
+  | _ as c { Buffer.add_char buffer c; string lexbuf }
 
 and line_comment = parse
   | '\n' { Lexing.new_line lexbuf; token lexbuf }
