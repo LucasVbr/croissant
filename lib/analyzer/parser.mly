@@ -2,18 +2,28 @@
 open Syntax
 %}
 
-%token <int> INT
+%token <int> INTEGER
 %token <float> FLOAT
 %token <char> CHARACTER
 %token <bool> BOOLEAN
 %token <string> STRING
 %token <string> IDENTIFIER
-%token NULL
+
+%token EQUAL "="
+%token VAR
+
+%token INTEGER_TYPE
+%token FLOAT_TYPE
+%token BOOLEAN_TYPE
+%token STRING_TYPE
+%token CHARACTER_TYPE
+%token NULL_TYPE
+%token VOID_TYPE
 
 %token PLUS "+"
 %token MINUS "-"
 %token TIMES "*"
-%token DIV "/"
+%token DIVIDE "/"
 %token EQUAL_EQUAL "=="
 %token NOT_EQUAL "!="
 %token LESS_THAN "<"
@@ -25,6 +35,7 @@ open Syntax
 %token EXCLAMATION "!"
 
 %token SEMICOLON ";"
+%token COLON ":"
 
 %token LPAREN "("
 %token RPAREN ")"
@@ -36,49 +47,59 @@ open Syntax
 
 %nonassoc UMINUS
 
-%start <SourceFiles.source_files> main
+%start <Roots.program> main
 
 %%
 
 main:
-  | statements EOF { SourceFiles.SourceFile $1 }
+  | statements EOF { new Roots.program $1 }
 
 statements:
   | statement ";"            { $1 }
-  | statement ";" statements { Statements.SequenceStatement ($1, $3) }
+  | statement ";" statements { new Statements.sequence $1 $3 }
 
 statement:
-  | expression  { Statements.ExpressionStatement($1) }
+  | expression  { new Statements.expression $1 }
+  | VAR IDENTIFIER ":" tp "=" expression { new Statements.variableDeclaration $2 $4 $6 }
 
 expression:
-  | literal            { Expressions.Literal($1) }
-  | IDENTIFIER         { Expressions.Identifier($1) }
+  | literal            { new Expressions.literal $1 }
+  | IDENTIFIER         { new Expressions.identifier $1 }
   | unary_expression   { $1 }
   | binary_expression  { $1 }
   | "(" expression ")" { $2 }
 
+tp:
+  | INTEGER_TYPE { Types.IntegerType }
+  | FLOAT_TYPE { Types.FloatType }
+  | BOOLEAN_TYPE { Types.BooleanType }
+  | STRING_TYPE { Types.StringType }
+  | CHARACTER_TYPE { Types.CharacterType }
+  | NULL_TYPE { Types.NullType }
+  | VOID_TYPE { Types.VoidType }
+
 literal:
-  | INT { Literals.Integer($1) }
-  | FLOAT { Literals.Float($1) }
-  | BOOLEAN { Literals.Boolean($1) }
-  | CHARACTER { Literals.Character($1) }
-  | STRING { Literals.String($1) }
-  | NULL { Literals.Null }
+  | INTEGER { new Literals.eInteger $1 }
+  | FLOAT { new Literals.eFloat $1 }
+  | BOOLEAN { new Literals.eBoolean $1 }
+  | CHARACTER { new Literals.eCharacter $1 }
+  | STRING { new Literals.eString $1 }
+  | NULL_TYPE { new Literals.eNull }
 
 unary_expression:
-  | "-" expression %prec UMINUS { Expressions.UnaryExpression(UnaryOperators.ArithmeticNegation, $2) }
-  | "!" expression { Expressions.UnaryExpression(UnaryOperators.LogicalNegation, $2) }
+  | "-" expression %prec UMINUS { new Expressions.unaryOperation (new UnaryOperators.arithmeticNegation) $2 }
+  | "!" expression              { new Expressions.unaryOperation (new UnaryOperators.logicalNegation) $2 }
 
 binary_expression:
-  | expression "+" expression { Expressions.BinaryExpression (BinaryOperators.Add, $1, $3) }
-  | expression "-" expression { Expressions.BinaryExpression (BinaryOperators.Subtract, $1, $3) }
-  | expression "*" expression { Expressions.BinaryExpression (BinaryOperators.Multiply, $1, $3) }
-  | expression "/" expression { Expressions.BinaryExpression (BinaryOperators.Divide, $1, $3) }
-  | expression "==" expression { Expressions.BinaryExpression (BinaryOperators.Equals, $1, $3) }
-  | expression "!=" expression { Expressions.BinaryExpression (BinaryOperators.NotEquals, $1, $3) }
-  | expression "<" expression { Expressions.BinaryExpression (BinaryOperators.LessThan, $1, $3) }
-  | expression "<=" expression { Expressions.BinaryExpression (BinaryOperators.LessThanEquals, $1, $3) }
-  | expression ">" expression { Expressions.BinaryExpression (BinaryOperators.GreaterThan, $1, $3) }
-  | expression ">=" expression { Expressions.BinaryExpression (BinaryOperators.GreaterThanEquals, $1, $3) }
-  | expression "&&" expression { Expressions.BinaryExpression (BinaryOperators.And, $1, $3) }
-  | expression "||" expression { Expressions.BinaryExpression (BinaryOperators.Or, $1, $3) }
+  | expression "+" expression  { new Expressions.binaryOperation (new BinaryOperators.add) $1 $3 }
+  | expression "-" expression  { new Expressions.binaryOperation (new BinaryOperators.subtract) $1 $3 }
+  | expression "*" expression  { new Expressions.binaryOperation (new BinaryOperators.multiply) $1 $3 }
+  | expression "/" expression  { new Expressions.binaryOperation (new BinaryOperators.divide) $1 $3 }
+  | expression "==" expression { new Expressions.binaryOperation (new BinaryOperators.equals) $1 $3 }
+  | expression "!=" expression { new Expressions.binaryOperation (new BinaryOperators.notEquals) $1 $3 }
+  | expression "<" expression  { new Expressions.binaryOperation (new BinaryOperators.lessThan) $1 $3 }
+  | expression "<=" expression { new Expressions.binaryOperation (new BinaryOperators.lessThanEquals) $1 $3 }
+  | expression ">" expression  { new Expressions.binaryOperation (new BinaryOperators.greaterThan) $1 $3 }
+  | expression ">=" expression { new Expressions.binaryOperation (new BinaryOperators.greaterThanEquals) $1 $3 }
+  | expression "&&" expression { new Expressions.binaryOperation (new BinaryOperators.logicalAnd) $1 $3 }
+  | expression "||" expression { new Expressions.binaryOperation (new BinaryOperators.logicalOr) $1 $3 }

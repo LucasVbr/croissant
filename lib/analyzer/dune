@@ -1,7 +1,7 @@
 (library
- (name Analyzer)
+ (name analyzer)
  (modules lexer parser)
- (libraries Syntax))
+ (libraries syntax))
 
 (menhir
  (modules parser))

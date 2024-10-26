@@ -1,10 +1,14 @@
 (library
- (name Syntax)
+ (name syntax)
  (modules
+  Node
   Types
-  Literals
+  Environments
   BinaryOperators
   UnaryOperators
+  Literals
   Expressions
   Statements
-  SourceFiles))
+  Roots)
+; (libraries typing)
+)

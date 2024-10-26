@@ -1,15 +1,17 @@
-type types =
+type t =
   | IntegerType
   | FloatType
-  | CharacterType
-  | StringType
   | BooleanType
+  | StringType
+  | CharacterType
+  | NullType
   | VoidType
 
-let pp_types = function
+let string_of_t = function
   | IntegerType -> "IntegerType"
   | FloatType -> "FloatType"
-  | CharacterType -> "CharacterType"
-  | StringType -> "StringType"
   | BooleanType -> "BooleanType"
+  | StringType -> "StringType"
+  | CharacterType -> "CharacterType"
+  | NullType -> "NullType"
   | VoidType -> "VoidType"

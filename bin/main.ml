@@ -1,8 +1,15 @@
+open Syntax.Roots
+
+let get_lexbuf () =
+  if Array.length Sys.argv > 1 then
+    let file_path = Sys.argv.(1) in
+    let file_stream = open_in file_path in
+    Lexing.from_channel file_stream
+  else Lexing.from_channel stdin
+
 let () =
-  let file_path = Sys.argv.(1) in
-  let file_stream = open_in file_path in
-  let lexbuf = Lexing.from_channel file_stream in
-  let ast =
+  let lexbuf = get_lexbuf () in
+  let ast : program =
     try Analyzer.Parser.main Analyzer.Lexer.token lexbuf with
     | Analyzer.Lexer.Error c ->
         let file_name = lexbuf.lex_curr_p.pos_fname
@@ -20,4 +27,5 @@ let () =
           file_name line_num col_num "Erreur syntaxique" "Syntaxe incorrecte";
         exit 1
   in
-  Printf.printf "%s\n" (Syntax.SourceFiles.pp_source_files ast)
+  let _ = ast#check_type in
+  Printf.printf "%s\n" (Syntax.Literals.string_of_literal_value ast#eval)

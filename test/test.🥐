@@ -1,0 +1,5 @@
+var a : entier = 5;         // 5
+var b : flottant = a + 3.8; // 8.8
+var c : flottant = b * a;   // 44.0
+
+var d : chaine = "Hello" + "World"; // "HelloWorld"

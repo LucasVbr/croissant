@@ -1,1 +1,0 @@
-type environment = { variables : (string * Types.types) list }

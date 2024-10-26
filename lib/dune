@@ -1,3 +1,3 @@
 (library
  (name Croissant)
- (libraries Syntax Analyzer))
+ (libraries syntax analyzer))

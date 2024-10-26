@@ -33,7 +33,8 @@ rule token = parse
   | '+' { PLUS }
   | '-' { MINUS }
   | '*' { TIMES }
-  | '/' { DIV }
+  | '/' { DIVIDE }
+  | "=" { EQUAL }
   | "==" { EQUAL_EQUAL }
   | "!=" { NOT_EQUAL }
   | "<" { LESS_THAN }
@@ -43,16 +44,24 @@ rule token = parse
   | "&&" { AMPERSAND_AMPERSAND }
   | "||" { BAR_BAR }
   | "!" { EXCLAMATION }
+  | ":" { COLON }
 
   (* Keywords *)
   | "vrai" { BOOLEAN(true) }
   | "faux" { BOOLEAN(false) }
+  | "var" { VAR }
+  | "entier" { INTEGER_TYPE }
+  | "flottant" { FLOAT_TYPE }
+  | "booleen" { BOOLEAN_TYPE }
+  | "chaine" { STRING_TYPE }
+  | "caractere" { CHARACTER_TYPE }
+  | "nul" { NULL_TYPE }
+  | "vide" { VOID_TYPE }
 
   (* Literals *)
-  | interger as i { INT (int_of_string i) }
+  | interger as i { INTEGER (int_of_string i) }
   | float as f { FLOAT (float_of_string f) }
   | '"' { Buffer.clear buffer; STRING(string lexbuf) }
-  | "''" { NULL }
   | "'\\''"    { CHARACTER '\'' }
   | "'\\n'"    { CHARACTER '\n' }
   | "'\\t'"    { CHARACTER '\t' }
